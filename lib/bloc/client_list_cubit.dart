@@ -15,7 +15,13 @@ class ClientListCubit extends HydratedCubit<List<ClientModel>> {
   Future<void> refreshClients() async {
     try {
       var clients = await getClients();
-      emit(clients ?? []);
+      if (clients == null) {
+        throw Exception("Null clients");
+      }
+      if (clients.isEmpty) {
+        throw Exception("Empty Clients");
+      }
+      emit(clients);
     } catch (e) {
       Fluttertoast.showToast(msg: e.toString());
     }
